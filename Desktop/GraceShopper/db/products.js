@@ -1,18 +1,18 @@
-const { client } = require("./client");
+const {client} = require("./client");
 
 async function createProduct({ title, description }) {
     try {
         const { rows: [product] } = await client.query(`
-      INSERT INTO products (title, price, author, description, category)
+      INSERT INTO products (title, price, author, description)
       VALUES ($1, $2, $3, $4, $5)
       ON CONFLICT (title) DO NOTHING
       RETURNING *;
-    `, [title, price, author, description, category])
+    `, [title, price, author, description])
 
         return product;
     }
     catch (ex) {
-        console.log('error in creatPruduct adapter function')
+        console.log('error in createProduct adapter function')
     }
 }
 const { client } = require("./client");
@@ -48,7 +48,6 @@ async function getAllProducts() {
     throw error;
   }
 }
-
 async function getProductById(productId) {
   try {
     const {
@@ -66,7 +65,6 @@ async function getProductById(productId) {
     throw error;
   }
 }
-
 async function updateProduct(updateProduct) {
   try {
     const updateStr = Object.keys(updateData)
@@ -91,7 +89,6 @@ async function updateProduct(updateProduct) {
     throw error;
   }
 }
-
 async function deleteProduct(productId) {
   try {
     const {
@@ -104,13 +101,11 @@ async function deleteProduct(productId) {
       `,
       [productId]
     );
-
     return product;
   } catch (error) {
     throw error;
   }
 }
-
 module.exports = {
   createProduct,
   getAllProducts,
